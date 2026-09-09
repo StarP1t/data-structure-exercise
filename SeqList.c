@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #define MAX_SIZE 100
-#define ELEM_TYPE int
+#define ELEM_TYPE int // 涉及printf均使用%d
 
 // 顺序表
 typedef struct{
@@ -9,7 +9,7 @@ typedef struct{
     int length;
 } SeqList;
 
-// 动态内存初始化
+// 动态初始化
 SeqList* init_list()
 {
     SeqList *L = (SeqList*)malloc(sizeof(SeqList));
