@@ -1,0 +1,16 @@
+*.exe
+*.out
+*.app
+a.out
+a.exe
+*.o
+*.obj
+*.ilk
+*.pdb
+.vscode/
+.idea/
+*.swp
+*.swo
+Thumbs.db
+*.log
+*.tmp
