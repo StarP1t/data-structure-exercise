@@ -157,6 +157,25 @@ int delete_index(Node* H, int index)
     return 0;
 }
 
+// 删除正中节点
+int delete_mid(Node* H)
+{
+    Node* pf = H->next;
+    Node* ps = H;
+
+    while (pf != NULL && pf->next != NULL)
+    {
+        pf = pf->next->next;
+        ps = ps->next;
+    }
+
+    Node* tmp = ps->next;
+    ps->next = tmp->next;
+    free(tmp);
+
+    return 0;
+}
+
 // 改变指定元素
 int replace_index(Node* H, int index, ELEM_TYPE e)
 {
