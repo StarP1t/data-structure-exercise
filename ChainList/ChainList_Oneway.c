@@ -110,6 +110,26 @@ int insert_index(Node* H, int index, ELEM_TYPE e)
     return 0;
 }
 
+// 反转链表（len>3）
+Node* reverse_list(Node* H)
+{
+    Node* p1 = NULL;
+    Node* p2 = H->next;
+    Node* p3;
+
+    while (p2 != NULL)
+    {
+        p3 = p2->next;
+        p2->next = p1;
+        p1 = p2;
+        p2 = p3;
+    }
+    p2 = init_list();
+    p2->next = p1;
+
+    return p2;
+}
+
 // 删除指定元素
 int delete_index(Node* H, int index)
 {
@@ -167,14 +187,13 @@ int search_index(Node* H, ELEM_TYPE e)
     Node* p = H;
     int index = 0;
 
-    while (p != NULL || p->data != e)
+    while (p != NULL)
     {
+        if (p->data == e)
+            return index;
         p = p->next;
         index++;
     }
-
-    if (p->data == e)
-        return index;
     return -1;
 }
 
@@ -197,7 +216,9 @@ int main()
     show_list(C);
     ELEM_TYPE res = search_index(C, 5);
     printf("res:%d\n", res);
-    free_list(C);
+    Node* r = reverse_list(C);
+    show_list(r);
+    free_list(r);
 
     return 0;
 }
