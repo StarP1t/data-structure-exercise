@@ -44,6 +44,24 @@ void show_list(Node* H)
     printf("\n");
 }
 
+// 判断环路
+int is_loop(Node* H)
+{
+    Node* f = H;
+    Node* s = H;
+
+    while (f != NULL && f->next != NULL)
+    {
+        f = f->next->next;
+        s = s->next;
+
+        if (f == s)
+            return 1;
+    }
+
+    return 0;
+}
+
 // 获取长度（含头节点）
 int len_list(Node* H)
 {
