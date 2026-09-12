@@ -62,6 +62,47 @@ int is_loop(Node* H)
     return 0;
 }
 
+// 判断环路和起点
+Node* find_loop_start(Node* H)
+{
+    Node* f = H;
+    Node* s = H;
+
+    while (f != NULL && f->next != NULL)
+    {
+        f = f->next->next;
+        s = s->next;
+
+        if (f == s)
+        {
+            Node* c = s->next;
+            int loop_len = 1;
+
+            while (c != s)
+            {
+                c = c->next;
+                loop_len++;
+            }
+
+            f = H;
+            s = H;
+
+            for (int i = 0; i < loop_len; i++)
+                f = f->next;
+    
+            while (f != s)
+            {
+                f = f->next;
+                s = s->next;
+            }
+
+            return s;
+        }
+    }
+    
+    return NULL;
+}
+
 // 获取长度（含头节点）
 int len_list(Node* H)
 {
