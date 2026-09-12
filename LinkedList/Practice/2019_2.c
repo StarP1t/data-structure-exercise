@@ -76,8 +76,7 @@ Node* change_list(Node* H)
         pf = pf->next->next;
         ps = ps->next;
     }
-
-    
+   
     ps = reverse_list(ps);
     ps = ps->next;
     pf = H->next;
