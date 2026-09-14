@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define ELEM_TYPE char
+typedef char ElemType;
 
 /* 题目：设计尽可能高效的算法，查找链表储存单词共同后缀的起始位置 */
 
@@ -8,7 +8,7 @@
 // 单向链表定义
 typedef struct Node
 {
-    ELEM_TYPE data;
+    ElemType data;
     struct Node *link;
 } Node;
 
@@ -49,7 +49,7 @@ int len_list(Node* H)
 }
 
 // 尾插入
-void insert_tail(Node* H, ELEM_TYPE e)
+void insert_tail(Node* H, ElemType e)
 {
     Node* p = (Node*)malloc(sizeof(Node));
     p->data = e;

@@ -1,13 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define ELEM_TYPE int
+typedef int ElemType;
 
 /* 题目：将一个链表a1a2a3...an改变为a1ana2an-1a3...顺序 */
 
 // 单向链表
 typedef struct Node
 {
-    ELEM_TYPE data;
+    ElemType data;
     struct Node *next;
 } Node;
 
@@ -33,7 +33,7 @@ void show_list(Node* H)
 }
 
 // 尾插入
-void insert_tail(Node* H, ELEM_TYPE e)
+void insert_tail(Node* H, ElemType e)
 {
     Node* p = (Node*)malloc(sizeof(Node));
     p->data = e;

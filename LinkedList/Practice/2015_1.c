@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define ELEM_TYPE int
+typedef int ElemType;
 
 /* 题目：设计尽可能时间高效的算法，在保存了n个num的单向链表中，
    查找并删除绝对值（小于n）的相同元素，仅保留第一次出现的元素。 */
@@ -9,7 +9,7 @@
 // 单向链表定义
 typedef struct Node
 {
-    ELEM_TYPE data;
+    ElemType data;
     struct Node *link;
 } Node;
 
@@ -35,7 +35,7 @@ void show_list(Node* H)
 }
 
 // 尾插入
-void insert_tail(Node* H, ELEM_TYPE e)
+void insert_tail(Node* H, ElemType e)
 {
     Node* p = (Node*)malloc(sizeof(Node));
     p->data = e;

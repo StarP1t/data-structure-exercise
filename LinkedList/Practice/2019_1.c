@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define ELEM_TYPE int
+typedef int ElemType;
 
 /* 题目：设计尽可能高效的算法，查找链表中倒数第k个节点。成功输出data，返回1；否则返回0。 */
 
@@ -8,7 +8,7 @@
 // 单向链表定义
 typedef struct Node
 {
-    ELEM_TYPE data;
+    ElemType data;
     struct Node *link;
 } Node;
 
@@ -34,7 +34,7 @@ void show_list(Node* H)
 }
 
 // 尾插入
-void insert_tail(Node* H, ELEM_TYPE e)
+void insert_tail(Node* H, ElemType e)
 {
     Node* p = (Node*)malloc(sizeof(Node));
     p->data = e;

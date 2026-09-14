@@ -1,10 +1,10 @@
 #include <stdio.h>
 #define MAX_SIZE 100
-
-typedef int ELEM_TYPE;
+typedef int ElemType;
 
 typedef struct stack
 {
-    ELEM_TYPE data[MAX_SIZE];
+    ElemType data[MAX_SIZE];
     int top;
 } stack;
+

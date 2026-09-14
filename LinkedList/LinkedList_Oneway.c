@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define ELEM_TYPE int // 涉及printf均使用%d
+typedef int ElemType; // 涉及printf均使用%d
 
 // 单向链表
 typedef struct Node
 {
-    ELEM_TYPE data;
+    ElemType data;
     struct Node *next;
 } Node;
 
@@ -119,7 +119,7 @@ int len_list(Node* H)
 }
 
 // 头插入
-void insert_head(Node* H, ELEM_TYPE e)
+void insert_head(Node* H, ElemType e)
 {
     Node* p = (Node*)malloc(sizeof(Node));
     p->data = e;
@@ -131,7 +131,7 @@ void insert_head(Node* H, ELEM_TYPE e)
 }
 
 // 尾插入
-void insert_tail(Node* H, ELEM_TYPE e)
+void insert_tail(Node* H, ElemType e)
 {
     Node* p = (Node*)malloc(sizeof(Node));
     p->data = e;
@@ -144,7 +144,7 @@ void insert_tail(Node* H, ELEM_TYPE e)
 }
 
 // 指定插入
-int insert_index(Node* H, int index, ELEM_TYPE e)
+int insert_index(Node* H, int index, ElemType e)
 {
     if (index < 0 || index >= len_list(H))
     {
@@ -236,7 +236,7 @@ int delete_mid(Node* H)
 }
 
 // 改变指定元素
-int replace_index(Node* H, int index, ELEM_TYPE e)
+int replace_index(Node* H, int index, ElemType e)
 {
     if (index < 0 || index >= len_list(H))
     {
@@ -260,7 +260,7 @@ int replace_index(Node* H, int index, ELEM_TYPE e)
 }
 
 // 查找指定元素
-int search_index(Node* H, ELEM_TYPE e)
+int search_index(Node* H, ElemType e)
 {
     Node* p = H;
     int index = 0;
@@ -292,7 +292,7 @@ int main()
     delete_index(C, 2);
     replace_index(C, 3, 8);
     show_list(C);
-    ELEM_TYPE res = search_index(C, 5);
+    ElemType res = search_index(C, 5);
     printf("res:%d\n", res);
     Node* r = reverse_list(C);
     show_list(r);

@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define ELEM_TYPE int
+typedef int ElemType;
 
 // 双向链表
 typedef struct Node
 {
-    ELEM_TYPE data;
+    ElemType data;
     struct Node *prev, *next;
 } Node;
 
@@ -75,7 +75,7 @@ void show_list(Node* H, int is_reverse)
 }
 
 // 头插法
-int insert_head(Node* H, ELEM_TYPE e)
+int insert_head(Node* H, ElemType e)
 {
     Node* p = (Node*)malloc(sizeof(Node));
     p->data = e;
@@ -90,7 +90,7 @@ int insert_head(Node* H, ELEM_TYPE e)
 }
 
 // 尾插法（头节点）
-int insert_tail_by_head(Node* H, ELEM_TYPE e)
+int insert_tail_by_head(Node* H, ElemType e)
 {
     Node* n = (Node*)malloc(sizeof(Node));
     n->data = e;
@@ -106,7 +106,7 @@ int insert_tail_by_head(Node* H, ELEM_TYPE e)
 }
 
 // 尾插法（尾节点）
-int insert_tail(Node* T, ELEM_TYPE e)
+int insert_tail(Node* T, ElemType e)
 {
     Node* n = (Node*)malloc(sizeof(Node));
     n->data = e;
@@ -118,7 +118,7 @@ int insert_tail(Node* T, ELEM_TYPE e)
 }
 
 // 指定位置插入
-int insert_index(Node* H, int index, ELEM_TYPE e)
+int insert_index(Node* H, int index, ElemType e)
 {
     if (index < 0 || index >= len_list(H))
     {

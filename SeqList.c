@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #define MAX_SIZE 100
-#define ELEM_TYPE int // 涉及printf均使用%d
+#define ElemType int // 涉及printf均使用%d
 
 // 顺序表
 typedef struct{
-    ELEM_TYPE *data;
+    ElemType *data;
     int length;
 } SeqList;
 
@@ -13,7 +13,7 @@ typedef struct{
 SeqList* init_list()
 {
     SeqList *L = (SeqList*)malloc(sizeof(SeqList));
-    L->data = (ELEM_TYPE*)malloc(sizeof(ELEM_TYPE) * MAX_SIZE);
+    L->data = (ElemType*)malloc(sizeof(ElemType) * MAX_SIZE);
     L->length = 0;
 
     return L;
@@ -35,7 +35,7 @@ int show_list(SeqList *L)
 }
 
 // 末尾添加
-int append_list(SeqList *L, ELEM_TYPE e)
+int append_list(SeqList *L, ElemType e)
 {
     if (L->length >= MAX_SIZE)
     {
@@ -49,7 +49,7 @@ int append_list(SeqList *L, ELEM_TYPE e)
 }
 
 // 指定位置插入
-int insert_list(SeqList *L, int pos, ELEM_TYPE e)
+int insert_list(SeqList *L, int pos, ElemType e)
 {
     int index = pos - 1;
 
@@ -73,7 +73,7 @@ int insert_list(SeqList *L, int pos, ELEM_TYPE e)
 }
 
 // 指定删除
-int delete_list(SeqList *L, int pos, ELEM_TYPE *deleted)
+int delete_list(SeqList *L, int pos, ElemType *deleted)
 {
     int index = pos - 1;
 
@@ -96,7 +96,7 @@ int delete_list(SeqList *L, int pos, ELEM_TYPE *deleted)
 }
 
 // 指定替换
-int replace_list(SeqList *L, int pos, ELEM_TYPE new, ELEM_TYPE *pre)
+int replace_list(SeqList *L, int pos, ElemType new, ElemType *pre)
 {
     int index = pos - 1;
 
@@ -117,7 +117,7 @@ int replace_list(SeqList *L, int pos, ELEM_TYPE new, ELEM_TYPE *pre)
 }
 
 // 搜索（1开始顺序）
-int searchpos_list(SeqList *L, ELEM_TYPE e)
+int searchpos_list(SeqList *L, ElemType e)
 {
     for (int i = 0; i < L->length; i++)
         if (L->data[i] == e)
