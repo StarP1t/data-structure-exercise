@@ -141,3 +141,30 @@ int insert_index(Node* H, int index, ELEM_TYPE e)
 
     return 0;
 }
+
+// 删除节点
+int delete_index(Node* H, int index)
+{
+    if (index < 0 || index >= len_list(H))
+    {
+        printf("错误索引\n");
+        return -1;
+    }
+    else if (index == 0)
+    {
+        printf("不可删除头节点\n");
+        return -1;
+    }
+
+    Node* p = H;
+    Node* q;
+    for (int i = 0; i < index; i++)
+        p = p->next;
+    q = p->prev;
+    q->next = p->next;
+    if (p->next != NULL)
+        p->next->prev = q;
+    free(p);
+
+    return 0;
+}
