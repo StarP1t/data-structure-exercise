@@ -35,7 +35,7 @@ void free_list(Node* H)
 // 遍历
 void show_list(Node* H)
 {
-    Node* p = H;
+    Node* p = H->next;
     while (p != NULL)
     {
         printf("%d ", p->data);
