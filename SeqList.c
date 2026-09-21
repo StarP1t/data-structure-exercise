@@ -1,12 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #define MAX_SIZE 100
-#define ElemType int // 涉及printf均使用%d
+#define EXP_SIZE 10
+typedef int ElemType; // 涉及printf均使用%d
 
 // 顺序表
 typedef struct{
     ElemType *data;
     int length;
+    int max_length;
 } SeqList;
 
 // 动态初始化
@@ -15,6 +17,7 @@ SeqList* init_list()
     SeqList *L = (SeqList*)malloc(sizeof(SeqList));
     L->data = (ElemType*)malloc(sizeof(ElemType) * MAX_SIZE);
     L->length = 0;
+    L->max_length = MAX_SIZE;
 
     return L;
 }
@@ -34,6 +37,30 @@ int show_list(SeqList *L)
     return 0;
 }
 
+// 合并
+SeqList* merge_list(SeqList* L1, SeqList* L2)
+{
+    SeqList* L = init_list();
+    L->max_length = L->length = L1->max_length + L2->max_length;
+    ElemType* n = (ElemType*)realloc(L->data, L->max_length);
+
+    if (!n)
+    {
+        printf("Allocate fail!\n");
+        return NULL;
+    }
+
+    ElemType* p1r = L1->data[L1->length-1], *p2r = L2->data[L2->length-1];
+    ElemType* p1 = L1->data, *p2 = L2->data, *p = L->data;
+    
+    while (p1 <= p1r)
+        *p++ = *p1++;
+    while (p2 <= p2r)
+        *p++ = *p2++;
+
+    return L;
+}
+
 // 末尾添加
 int append_list(SeqList *L, ElemType e)
 {
@@ -41,6 +68,25 @@ int append_list(SeqList *L, ElemType e)
     {
         printf("顺序表已满\n");
         return -1;
+    }
+
+    L->data[L->length] = e;
+    L->length++;
+    return 0;
+}
+
+// 末尾添加-扩展表
+int append_list_exp(SeqList* L, ElemType e)
+{
+    if (L->length >= L->max_length)
+    {
+        ElemType* n = (ElemType*)realloc(L->data, (L->max_length + EXP_SIZE) * sizeof(ElemType));
+        if (!n)
+        {
+            printf("Extend fail, list full!\n");
+            return -1;
+        }
+        L->max_length += EXP_SIZE;
     }
 
     L->data[L->length] = e;
