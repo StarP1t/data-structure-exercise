@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #define MAX_SIZE 100
 typedef int ElemType;
 
@@ -42,12 +43,13 @@ int pop(Stack* s, ElemType *e)
     return 0;
 }
 
-// 符号定义
+// 符号枚举
 typedef enum
 {
     L_PARE, R_PARE, ADD, SUB, MUL, DIV, MOD, EOS, NUM
 } ContentType;
 
+// 输入表达式
 int get_expr(char* expr)
 {
     printf("Input a int post expr: ");
@@ -55,6 +57,7 @@ int get_expr(char* expr)
     return 0;
 }
 
+// 判断表达式元素
 ContentType get_token(char* symbol, char* expr, int* index)
 {
     *symbol = expr[*index];
@@ -86,6 +89,109 @@ ContentType get_token(char* symbol, char* expr, int* index)
     }
 }
 
+// 单个元素判断
+ContentType get_token_char(char symbol)
+{
+    switch (symbol)
+    {
+        case '(':
+            return L_PARE;
+        case ')':
+            return R_PARE;
+        case '+':
+            return ADD;
+        case '-':
+            return SUB;
+        case '*':
+            return MUL;
+        case '/':
+            return DIV;
+        case '%':
+            return MOD;
+        case '\0':
+            return EOS;
+        default:
+            if (symbol >= '0' && symbol <= '9')
+                return NUM;
+            else
+                return -1;
+    }
+}
+
+// 转换输出
+char token_to_char(ContentType token)
+{
+    switch (token)
+    {
+        case L_PARE:
+            return '(';
+        case R_PARE:
+            return ')';
+        case ADD:
+            return '+';
+        case SUB:
+            return '-';
+        case MUL:
+            return '*';
+        case DIV:
+            return '/';
+        case MOD:
+            return '%';
+        default:
+            return 0;
+    }
+}
+
+// 中缀转后缀
+int middle_to_post(char* mid, char* post)
+{
+    // 优先级定义（枚举顺序）
+    static int in_pr[] = {0, 19, 12, 12, 13, 13, 13, 0, 0};
+    static int out_pr[] = {20, 19, 12, 12, 13, 13, 13, 0, 0};
+
+    Stack* symbol_s = init_stack();
+    char symbol;
+    int index = 0;
+    ElemType e;
+    ContentType token;
+
+    symbol_s->data[0] = EOS;
+    token = get_token(&symbol, mid, &index);
+
+    while (token != EOS)
+    {
+        if (token == NUM)
+        {
+            char tmp[2] = {symbol, 0};
+            strcat(post, tmp);
+        }
+        else if (token == R_PARE)
+        {
+            while (symbol_s->data[symbol_s->top] != L_PARE)
+            {
+                pop(symbol_s, &e);
+                char tmp[2] = {token_to_char(get_token_char(e)), 0};
+                strcat(post, tmp);
+            }
+            pop(symbol_s, &e);
+        }
+        else
+        {
+            while (in_pr[symbol_s->data[symbol_s->top] >= out_pr[token]])
+            {
+                pop(symbol_s, &e);
+                char tmp[2] = {token_to_char(get_token_char(e)), 0};
+                strcat(post, tmp);
+            }  
+            push(symbol_s, token);
+        }
+
+        token = get_token(&symbol, mid, &index);
+    }
+    
+}
+
+// 计算表达式
 int eval(Stack* s, char* expr)
 {
     char symbol;
