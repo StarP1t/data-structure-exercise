@@ -159,7 +159,7 @@ int middle_to_post(char* mid, char* post)
         }
         else
         {
-            while (in_pr[symbol_s->data[symbol_s->top] >= out_pr[token]])
+            while (in_pr[symbol_s->data[symbol_s->top]] >= out_pr[token])
             {
                 pop(symbol_s, &e);
                 char tmp[2] = {token_to_char(e), 0};
@@ -171,7 +171,7 @@ int middle_to_post(char* mid, char* post)
         token = get_token(&symbol, mid, &index);
     }
 
-    while (symbol_s->top > 0)
+    while (symbol_s->data[symbol_s->top] != EOS)
     {
         pop(symbol_s, &e);
         char tmp[2] = {token_to_char(e), 0};
@@ -254,6 +254,7 @@ int main()
         char tmp[MAX_SIZE];
         middle_to_post(expr, tmp);
         strcpy(expr, tmp);
+        printf("Post expr: %s\n", expr);
     }
 
     eval(s, expr);
