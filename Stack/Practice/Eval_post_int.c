@@ -52,9 +52,19 @@ typedef enum
 // 输入表达式
 int get_expr(char* expr)
 {
-    printf("Input a int post expr: ");
+    int mode;
+    printf("Input mode (1 post, 2 mid): ");
+    scanf("%d", &mode);
+
+    if (mode == 2)
+        printf("Input a int mid expr: ");
+    else if (mode == 1)
+        printf("Input a int post expr: ");
+    else
+        return 0;
+
     scanf("%s", expr);
-    return 0;
+    return mode;
 }
 
 // 判断表达式元素
@@ -83,35 +93,6 @@ ContentType get_token(char* symbol, char* expr, int* index)
             return EOS;
         default:
             if (*symbol >= '0' && *symbol <= '9')
-                return NUM;
-            else
-                return -1;
-    }
-}
-
-// 单个元素判断
-ContentType get_token_char(char symbol)
-{
-    switch (symbol)
-    {
-        case '(':
-            return L_PARE;
-        case ')':
-            return R_PARE;
-        case '+':
-            return ADD;
-        case '-':
-            return SUB;
-        case '*':
-            return MUL;
-        case '/':
-            return DIV;
-        case '%':
-            return MOD;
-        case '\0':
-            return EOS;
-        default:
-            if (symbol >= '0' && symbol <= '9')
                 return NUM;
             else
                 return -1;
@@ -156,6 +137,7 @@ int middle_to_post(char* mid, char* post)
     ContentType token;
 
     symbol_s->data[0] = EOS;
+    symbol_s->top++;
     token = get_token(&symbol, mid, &index);
 
     while (token != EOS)
@@ -170,7 +152,7 @@ int middle_to_post(char* mid, char* post)
             while (symbol_s->data[symbol_s->top] != L_PARE)
             {
                 pop(symbol_s, &e);
-                char tmp[2] = {token_to_char(get_token_char(e)), 0};
+                char tmp[2] = {token_to_char(e), 0};
                 strcat(post, tmp);
             }
             pop(symbol_s, &e);
@@ -180,7 +162,7 @@ int middle_to_post(char* mid, char* post)
             while (in_pr[symbol_s->data[symbol_s->top] >= out_pr[token]])
             {
                 pop(symbol_s, &e);
-                char tmp[2] = {token_to_char(get_token_char(e)), 0};
+                char tmp[2] = {token_to_char(e), 0};
                 strcat(post, tmp);
             }  
             push(symbol_s, token);
@@ -188,7 +170,13 @@ int middle_to_post(char* mid, char* post)
 
         token = get_token(&symbol, mid, &index);
     }
-    
+
+    while (symbol_s->top > 0)
+    {
+        pop(symbol_s, &e);
+        char tmp[2] = {token_to_char(e), 0};
+        strcat(post, tmp);
+    }
 }
 
 // 计算表达式
@@ -257,8 +245,17 @@ int main()
 {
     Stack* s = init_stack();
     char expr[MAX_SIZE];
+    int mode;
     
-    get_expr(expr);
+    mode = get_expr(expr);
+
+    if (mode == 2)
+    {
+        char tmp[MAX_SIZE];
+        middle_to_post(expr, tmp);
+        strcpy(expr, tmp);
+    }
+
     eval(s, expr);
 
     return 0;
