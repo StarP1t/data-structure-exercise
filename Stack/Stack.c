@@ -19,6 +19,13 @@ Stack* init_stack()
     return s;
 }
 
+// 释放栈
+void free_stack(Stack* s)
+{
+    free(s->data);
+    free(s);
+}
+
 // 判断空栈
 int is_empty(Stack* s)
 {
