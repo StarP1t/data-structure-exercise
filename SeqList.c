@@ -11,7 +11,12 @@ typedef struct{
     int max_length;
 } SeqList;
 
-// 动态初始化
+/*
+函数名称: init_list
+输入: void
+输出: SeqList* L
+功能: malloc分配新顺序表指针
+*/
 SeqList* init_list()
 {
     SeqList *L = (SeqList*)malloc(sizeof(SeqList));
@@ -22,7 +27,12 @@ SeqList* init_list()
     return L;
 }
 
-// 遍历
+/*
+函数名称: show_list
+输入: SeqList* L
+输出: int (status) 0/-1
+功能: 打印顺序表内容，空指针提示并返回-1
+*/
 int show_list(SeqList *L)
 {
     if (L->length == 0)
@@ -37,7 +47,12 @@ int show_list(SeqList *L)
     return 0;
 }
 
-// 合并
+/*
+函数名称: merge_list
+输入: SeqList* L1, SeqList* L2
+输出: SeqList* L
+功能: 返回新分配顺序表指针，内容为L1追加L2，失败返回NULL
+*/
 SeqList* merge_list(SeqList* L1, SeqList* L2)
 {
     SeqList* L = init_list();
@@ -61,7 +76,12 @@ SeqList* merge_list(SeqList* L1, SeqList* L2)
     return L;
 }
 
-// 末尾添加
+/*
+函数名称: append_list
+输入: SeqList* L, ElemType e
+输出: int (status) 0/-1
+功能: 在顺序表末尾追加元素e，若表满提示并返回-1
+*/
 int append_list(SeqList *L, ElemType e)
 {
     if (L->length >= MAX_SIZE)
@@ -75,7 +95,12 @@ int append_list(SeqList *L, ElemType e)
     return 0;
 }
 
-// 末尾添加-扩展表
+/*
+函数名称: append_list_exp
+输入: SeqList* L, ElemType e
+输出: int (status) 0/-1
+功能: 在顺序表末尾追加元素e，若表满则尝试扩展长度，失败则提示表满并返回-1
+*/
 int append_list_exp(SeqList* L, ElemType e)
 {
     if (L->length >= L->max_length)
@@ -94,7 +119,12 @@ int append_list_exp(SeqList* L, ElemType e)
     return 0;
 }
 
-// 指定位置插入
+/*
+函数名称: insert_list
+输入: SeqList* L, int pos, ElemType e
+输出: int (status) 0/-1/-2
+功能: 在顺序表指定个数位置pos插入元素e，失败、非法提示并返回-1/-2
+*/
 int insert_list(SeqList *L, int pos, ElemType e)
 {
     int index = pos - 1;
@@ -107,7 +137,7 @@ int insert_list(SeqList *L, int pos, ElemType e)
     else if (index < 0 || index > L->length)
     {
         printf("插入位置不合法\n");
-        return -1;
+        return -2;
     }
 
     for (int i = L->length; i > index; i--)
@@ -118,7 +148,12 @@ int insert_list(SeqList *L, int pos, ElemType e)
     return 0;
 }
 
-// 指定删除
+/*
+函数名称: delete_list
+输入: SeqList* L, int pos, ElemType *deleted
+输出: int (status) 0/-1/-2
+功能: 删除顺序表指定个数位置pos的元素，并赋值到deleted里，表空、非法提示并返回-1/-2
+*/
 int delete_list(SeqList *L, int pos, ElemType *deleted)
 {
     int index = pos - 1;
@@ -131,7 +166,7 @@ int delete_list(SeqList *L, int pos, ElemType *deleted)
     else if (index < 0 || index >= L->length)
     {
         printf("删除位置不合法\n");
-        return -1;
+        return -2;
     }
 
     *deleted = L->data[index];
@@ -141,7 +176,12 @@ int delete_list(SeqList *L, int pos, ElemType *deleted)
     return 0;
 }
 
-// 指定替换
+/*
+函数名称: replace_list
+输入: SeqList* L, int pos, ElemType new, ElemType *pre
+输出: int (status) 0/-1/-2
+功能: 将顺序表指定个数位置pos元素赋值到pre，替换为new，表满、非法提示并返回-1/-2
+*/
 int replace_list(SeqList *L, int pos, ElemType new, ElemType *pre)
 {
     int index = pos - 1;
@@ -154,7 +194,7 @@ int replace_list(SeqList *L, int pos, ElemType new, ElemType *pre)
     else if (index < 0 || index >= L->length)
     {
         printf("替换位置不合法\n");
-        return -1;
+        return -2;
     }
 
     *pre = L->data[index];
@@ -162,8 +202,13 @@ int replace_list(SeqList *L, int pos, ElemType new, ElemType *pre)
     return 0;
 }
 
-// 搜索（1开始顺序）
-int searchpos_list(SeqList *L, ElemType e)
+/*
+函数名称: search_pos_list
+输入: SeqList* L, ElemType e
+输出: int pos
+功能: 查找顺序表中第一个元素e，未找到返回0
+*/
+int search_pos_list(SeqList *L, ElemType e)
 {
     for (int i = 0; i < L->length; i++)
         if (L->data[i] == e)
