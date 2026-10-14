@@ -78,14 +78,18 @@ int compare_str(String* s1, String* s2)
     return 0;
 }
 
-// 串追加
+/*
+函数名称：串追加
+输入: String* 目标串, String* 追加串
+输出: int 状态 (正常: 0/空串: -1/追加溢出: 1)
+*/
 int cat_str(String* dest, String* srcs)
 {
     if (dest == NULL | srcs == NULL)
         return -1;
     
     int d_i = dest->length, s_i = 0;
-    while (d_i < dest->max_len && s_i < srcs->max_len)
+    while (d_i < dest->max_len && s_i < srcs->length)
     {
         dest->data[d_i] = srcs->data[s_i];
         s_i++;
@@ -97,4 +101,31 @@ int cat_str(String* dest, String* srcs)
         return 0;
     else
         return 1;
+}
+
+/*
+函数名称：串插入
+输入: String* 目标串, String* 插入串, int 插入位置下标
+输出: String* 结果串 (失败：NULL) 
+*/
+String* insert_str(String* dest, String* srcs, int index)
+{
+    if (dest == NULL || srcs == NULL)
+        return NULL;
+    else if (index < 0 || index > dest->length)
+        return NULL;
+    
+    int new_max_len = dest->length + srcs->length;
+    String* tmp = init_str(new_max_len);
+    if (tmp == NULL)
+        return NULL;
+
+    for (int i = 0; i < index; i++)
+        tmp->data[tmp->length++] = dest->data[i];
+    for (int i = 0; i < srcs->length; i++)
+        tmp->data[tmp->length++] = srcs->data[i];   
+    for (int i = index; i < dest->length; i++)
+        tmp->data[tmp->length++] = dest->data[i];
+    
+    return tmp;
 }
