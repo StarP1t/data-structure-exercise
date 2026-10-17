@@ -10,7 +10,11 @@ typedef struct Stack
     struct Stack* next;
 } Stack;
 
-// 初始化
+/*
+函数名称: init_stack
+输出: Stack* s
+说明: 动态分配初始化新链栈，返回栈头指针
+*/
 Stack* init_stack()
 {
     Stack* s = (Stack*)malloc(sizeof(Stack));
@@ -19,7 +23,11 @@ Stack* init_stack()
     return s;
 }
 
-// 释放栈链
+/*
+函数名称: free_stack
+输入: Stack* S
+说明: 从栈头开始顺序释放所有节点
+*/
 void free_stack(Stack* S)
 {
     Stack* p = S;
@@ -33,13 +41,23 @@ void free_stack(Stack* S)
     }
 }
 
-// 判断空栈链
+/*
+函数名称: is_empty
+输入: Stack *S
+输出: int 1/0 
+说明: 判断为空链栈，是则输出1，否则0
+*/
 int is_empty(Stack* S)
 {
     return S->next == NULL;
 }
 
-// 压栈（头插法）
+/*
+函数名称: push
+输入: Stack* S, ElemType e
+输出: int (status) 0
+说明: 新增节点，将元素e插入链栈头节点后
+*/
 int push(Stack* S, ElemType e)
 {
     Stack* n = (Stack*)malloc(sizeof(Stack));
@@ -50,7 +68,12 @@ int push(Stack* S, ElemType e)
     return 0;
 }
 
-// 出栈
+/*
+函数名称: pop
+输入: Stack* S, ElemType *e
+输出: int (status) -1/0
+说明: 将链栈头指针后第一个节点元素赋值到元素指针中并释放节点，若栈空提示并输出-1
+*/
 int pop(Stack* S, ElemType *e)
 {
     if (S->next == NULL)
@@ -67,7 +90,12 @@ int pop(Stack* S, ElemType *e)
     return 0;
 }
 
-// 获取栈顶元素
+/*
+函数名称: get_top
+输入: Stack* S, ElemType *e
+输出: int (status) -1/0
+说明: 将链栈头指针后第一个节点元素赋值到元素指针，若栈空提示并输出-1
+*/
 int get_top(Stack* S, ElemType *e)
 {
     if (S->next == NULL)
