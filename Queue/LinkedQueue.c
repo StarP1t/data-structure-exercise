@@ -6,7 +6,7 @@ typedef int ElemType;
 // 链队列
 typedef struct
 {
-    ElemType* data;
+    ElemType data;
     struct Node* next;
 } Node;
 

@@ -36,6 +36,29 @@ int free_queue(Queue* q)
     return 0;
 }
 
+/*
+函数名称: show_queue
+输入: Queue* q
+输出: int (status) 0/-1
+说明: 遍历队列，队空输出-1
+*/
+int show_queue(Queue* q)
+{
+    if (q->is_empty)
+        return -1;
+    
+    int index = q->front;
+    while (1)
+    {
+        printf("%d ", q->data[index]);
+        if (index == q->rear)
+            break;
+        index = (index + 1) % MAX_SIZE;
+    }
+
+    return 0;
+}
+
 // 入队
 int queue(Queue* q, ELEM_TYPE e)
 {
