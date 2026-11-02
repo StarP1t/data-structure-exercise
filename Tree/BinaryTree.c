@@ -328,23 +328,23 @@ void trav_post_stack_tree_1(BTree t)
 
 /*
 函数名称: create_prev_iter_tree
-输入: BTree root
+输入: BTree* root
 输出: int (status) 0
 说明: 前序递归创建二叉树，输入空格为空结点
 */
-int create_prev_iter_tree(BTree root)
+int create_prev_iter_tree(BTree* root)
 {
     char ch;
     scanf("%c", &ch);
 
     if (ch == ' ')
-        root = NULL;
+        *root = NULL;
     else
     {
-        root = init_tree();
-        root->data = ch;
-        create_prev_iter_tree(root->lchild);
-        create_prev_iter_tree(root->rchild);
+        *root = init_tree();
+        (*root)->data = ch;
+        create_prev_iter_tree(&(*root)->lchild);
+        create_prev_iter_tree(&(*root)->rchild);
     }
     return 0;
 }

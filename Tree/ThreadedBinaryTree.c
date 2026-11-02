@@ -7,12 +7,27 @@ typedef char ElemType;
 typedef enum {Link, Thread} ThrTag;
 typedef struct ThreadedTreeNode
 {
-    ElemType *data;
+    ElemType data;
     ThrTag LTag;
     ThrTag RTag;
     ThreadedTreeNode *lchild;
     ThreadedTreeNode *rchild;
 } ThreadedTreeNode, *TBTree;
+
+/*
+函数名称：init_TTree
+输出：TBTree T
+说明：动态初始化新线索二叉树节点并返回，不初始化Tag
+*/
+TBTree init_TTree()
+{
+    TBTree T = (TBTree)malloc(sizeof(ThreadedTreeNode));
+    T->data = NULL;
+    T->lchild = NULL;
+    T->rchild = NULL;
+
+    return T;
+}
 
 /*
 函数名称：trav_mid_TTree_1
@@ -207,4 +222,31 @@ void thrd_post_TTree(TBTree N, TBTree* pre)
             (*pre)->rchild = N;
         *pre = N;
     }
+}
+
+
+/*
+函数名称: create_prev_iter_TTree
+输入: TBTree* root
+输出: int (status) 0
+说明: 前序递归创建二叉树，输入空格为空结点
+*/
+int create_prev_iter_TTree(TBTree* root)
+{
+    char ch;
+    scanf("%c", &ch);
+
+    if (ch == ' ')
+        *root = NULL;
+    else
+    {
+        *root = init_TTree();
+        (*root)->data = ch;
+        create_prev_iter_TTree(&(*root)->lchild);
+        create_prev_iter_TTree(&(*root)->rchild);
+
+        (*root)->LTag = (*root)->lchild ? Link : Thread;
+        (*root)->RTag = (*root)->rchild ? Link : Thread;
+    }
+    return 0;
 }
