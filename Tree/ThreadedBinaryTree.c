@@ -109,34 +109,102 @@ void trav_post_stack_TTree(TBTree T)
 
 /*
 函数名称：thrd_mid_TTree
-输入：TBTree N
+输入：TBTree N, TBTree* pre
 说明：中序线索化二叉树
 */
-void thrd_mid_TTree(TBTree N)
+void thrd_mid_TTree_1(TBTree N, TBTree* pre)
 {
-    static TBTree pre_po = NULL;
-    static TBTree pre_pr = NULL;
-
-    if (N) // 后继
+    if (N)
     {
-        thrd_mid_TTree(N->lchild);
-        if (!N->rchild)
-            N->RTag = Thread;
-        if (pre_po && pre_po->RTag == Thread)
-            pre_po->rchild = N;
-        pre_po = N;
-        thrd_mid_TTree(N->rchild);
-    }
-
-    if (N) // 前驱
-    {
-        thrd_mid_TTree(N->lchild);
+        // 前驱
+        thrd_mid_TTree_1(N->lchild, pre);
         if (!N->lchild)
         {
             N->LTag = Thread;
-            N->lchild = pre_pr;
+            N->lchild = *pre;
         }
-        pre_pr = N;
-        thrd_mid_TTree(N->rchild);
+
+        // 后继
+        if (!N->rchild)
+            N->RTag = Thread;
+        if (*pre && (*pre)->RTag == Thread)
+            (*pre)->rchild = N;
+        
+        *pre = N;
+        thrd_mid_TTree_1(N->rchild, pre);
+    }
+}
+
+/*
+函数名称：thrd_mid_TTree_2
+输入：TBTree N, TBTree* pre
+说明：中序线索化二叉树
+*/
+void thrd_mid_TTree_2(TBTree N, TBTree* pre)
+{
+    if (N)
+    {
+        thrd_mid_TTree_2(N->lchild, pre);
+        if (!N->lchild)
+        {
+            N->LTag = Thread;
+            N->lchild = *pre;
+        }
+        if (!N->rchild)
+            N->RTag = Thread;
+        if (*pre && (*pre)->RTag == Thread)
+            (*pre)->rchild = N;
+        *pre = N;
+        thrd_mid_TTree_2(N->rchild, pre);
+    }
+}
+
+/*
+函数名称：thrd_pre_TTree
+输入：TBTree N, TBTree* pre
+说明：先序线索化二叉树
+*/
+void thrd_pre_TTree(TBTree N, TBTree* pre)
+{
+    if (N)
+    {
+        if (!N->lchild)
+        {
+            N->LTag = Thread;
+            N->lchild = *pre;
+        }
+        if (!N->rchild)
+            N->RTag = Thread;
+        if (*pre && (*pre)->RTag == Thread)
+            (*pre)->rchild = N;
+        *pre = N;
+        if (N->LTag == Link)
+            thrd_pre_TTree(N->lchild, pre);
+        if (N->RTag == Link)
+            thrd_pre_TTree(N->rchild, pre);
+    }
+}
+
+/*
+函数名称：thrd_post_TTree
+输入：TBTree N, TBTree* pre
+说明：后序线索化二叉树
+*/
+void thrd_post_TTree(TBTree N, TBTree* pre)
+{
+    if (N)
+    {
+        thrd_post_TTree(N->lchild, pre);
+        thrd_post_TTree(N->rchild, pre);
+        if (!N->lchild)
+        {
+            N->LTag = Thread;
+            N->lchild = *pre;
+        }
+        if (!N->rchild)
+            N->RTag = Thread;
+        if (*pre && (*pre)->RTag == Thread)
+            (*pre)->rchild = N;
+        *pre = N;
     }
 }
