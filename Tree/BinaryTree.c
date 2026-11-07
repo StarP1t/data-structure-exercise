@@ -133,11 +133,6 @@ void free_tree(BTree t)
     
     free_tree(t->lchild);
     free_tree(t->rchild);
-    if (t->lchild != NULL)
-        free(t->lchild);
-    if (t->rchild != NULL)
-        free(t->rchild);
-
     free(t);
 }
 
