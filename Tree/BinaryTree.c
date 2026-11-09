@@ -147,8 +147,8 @@ void trav_pre_iter_tree(BTree t)
         return;
 
     printf("%c ", t->data);
-    trav_pre_tree(t->lchild);
-    trav_pre_tree(t->rchild);
+    trav_pre_iter_tree(t->lchild);
+    trav_pre_iter_tree(t->rchild);
 }
 
 /*
@@ -161,9 +161,9 @@ void trav_mid_iter_tree(BTree t)
     if (t == NULL)
         return;
 
-    trav_pre_tree(t->lchild);
+    trav_mid_iter_tree(t->lchild);
     printf("%c ", t->data);
-    trav_pre_tree(t->rchild);
+    trav_mid_iter_tree(t->rchild);
 }
 
 /*
@@ -176,8 +176,8 @@ void trav_post_iter_tree(BTree t)
     if (t == NULL)
         return;
 
-    trav_pre_tree(t->lchild);
-    trav_pre_tree(t->rchild);
+    trav_post_iter_tree(t->lchild);
+    trav_post_iter_tree(t->rchild);
     printf("%c ", t->data);
 }
 
