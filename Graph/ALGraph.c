@@ -105,3 +105,105 @@ void create_ALGraph(ALGraph* G)
         }
     }
 }
+
+/*
+函数名称：DFS
+输入：const ALGraph* G, int v, int* visited[MAX_VERTEX_NUM]
+输出：void
+说明：深度优先递归遍历图
+*/
+void DFS(const ALGraph* G, int v, int visited[MAX_VERTEX_NUM])
+{
+    const ALGraph g = *G;
+    const ArcNode* p;
+    printf("%c ", g.vertices[v].data);
+    visited[v] = 1;
+    p = g.vertices[v].firstarc;
+
+    while (p)
+    {
+        if (!visited[p->adjvex])
+            DFS(G, p->adjvex, visited);
+        p = p->nextarc;
+    }
+}
+
+/*
+函数名称：DFSTrav
+输入：const pALG G
+输出：void
+说明：深度优先遍历图调用
+*/
+void DFSTrav(const pALG G)
+{
+    int visited[MAX_VERTEX_NUM] = {0};
+
+    for (int v = 0; v < G->vexnum; v++)
+        if (!visited[v])
+            DFS(G, v, visited);
+    putchar('\n');
+}
+
+/*
+函数名称：BFS
+输入：const ALGraph* G, int v, int visited[MAX_VERTEX_NUM]
+输出：void
+说明：广度优先遍历图
+*/
+void BFS(const ALGraph* G, int v, int visited[MAX_VERTEX_NUM])
+{
+    const ALGraph g = *G;
+    const ArcNode *p;
+    int Queue[MAX_VERTEX_NUM] = {0};
+    int front = 0, tail = 0;
+
+    printf("%c ", g.vertices[v].data);
+
+    visited[v] = 1;
+    Queue[tail++] = v;
+
+    while (front != tail)
+    {
+        v = Queue[front++];
+        p = g.vertices[v].firstarc;
+        
+        while (p)
+        {
+            if (!visited[p->adjvex])
+            {
+                printf("%c ", G->vertices[p->adjvex].data);
+                visited[p->adjvex] = 1;
+                Queue[tail++] = p->adjvex;
+            }
+            
+            p = p->nextarc;
+        }
+    }
+}
+
+/*
+函数名称：BFSTrav
+输入：const pALG G
+输出：void
+说明：广度优先遍历图调用
+*/
+void BFSTrav(const pALG G)
+{
+    int visited[MAX_VERTEX_NUM] = {0};
+
+    for (int v = 0; v < G->vexnum; v++)
+        if (!visited[v])
+            BFS(G, v, visited);
+    putchar('\n');
+}
+
+int main()
+{
+    ALGraph G;
+
+    create_ALGraph(&G);
+    DFSTrav(&G);
+    BFSTrav(&G);
+
+    return 0;
+}
