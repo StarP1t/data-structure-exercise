@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #define MAX_VERTEX_NUM 20
 
 // 图
@@ -56,15 +57,24 @@ void create_MGraph(MGraph* G)
         char v1, v2;
         int w;
 
-        while (getchar() != '\n')
-            ;
-        printf("Input arcs (v1 v2 w): \n");
-        scanf("%c %c %d", &v1, &v2, &w);
-        r = locate_vex_MG(G, v1);
-        c = locate_vex_MG(G, v2);
-        G->arcs[r][c] = w;
-        if (type == 1)
-            G->arcs[c][r] = w;
+        while (1)
+        {
+            while (getchar() != '\n')
+                ;
+            printf("Input arcs (v1 v2 w): \n");
+            scanf("%c %c %d", &v1, &v2, &w);
+            r = locate_vex_MG(G, v1);
+            c = locate_vex_MG(G, v2);
+            if (G->arcs[r][c] == 0)
+            {
+                G->arcs[r][c] = w;
+                if (type == 1)
+                    G->arcs[c][r] = w;
+                break;
+            }
+            else
+                printf("Arc has been set!\n");
+        }
     }
 }
 
@@ -86,12 +96,76 @@ void print_MGraph(const MGraph* G)
     }
 }
 
+// 普里姆算法辅助结构定义
+#define INFINITY 2147483647
+typedef int VRType;
+struct 
+{
+    VexType adjvex;
+    VRType lowcost;
+} closedge[MAX_VERTEX_NUM];
+
+/*
+函数名称：MST_Prim_MGraph
+输入：const MGraph* G, const VexType start
+说明：普利姆算法，打印最小生成树的边
+*/
+void MST_Prim_MGraph(const MGraph* G, const VexType start)
+{
+    // 起始点下标确定
+    int k = locate_vex_MG(G, start);
+    if (k == -1)
+    {
+        printf("Invalid start node!\n");
+        return;
+    }
+
+    // 初始化辅助数组
+    for (int i = 0; i < G->vexnum; i++) 
+    {
+        if (i != k)
+        {
+            closedge[i].adjvex = start;
+            closedge[i].lowcost = (G->arcs[k][i] == 0) ? INFINITY : G->arcs[k][i];
+        }
+    }
+    closedge[k].lowcost = 0;
+
+    for (int i = 1; i < G->vexnum; i++) // 循环直到所有点都加入集合
+    {
+        int mincost = INFINITY;
+        
+        for (int j = 0; j < G->vexnum; j++) // 寻找当前辅助数组权最小边
+        {
+            if (closedge[j].lowcost < mincost && closedge[j].lowcost != 0)
+            {
+                mincost = closedge[j].lowcost;
+                k = j;
+            }
+        }
+
+        printf("(%c, %c)\n", closedge[k].adjvex, G->Vexs[k]);
+        closedge[k].lowcost = 0;
+
+        // 更新辅助数组
+        for (int j = 0; j < G->vexnum; j++)
+        {
+            if (G->arcs[k][j] < closedge[j].lowcost && G->arcs[k][j] != 0)
+            {
+                closedge[j].adjvex = G->Vexs[k];
+                closedge[j].lowcost = G->arcs[k][j];
+            }
+        }
+    }
+}
+
 int main()
 {
     pMG g = (pMG)malloc(sizeof(MGraph));
 
     create_MGraph(g);
     print_MGraph(g);
+    MST_Prim_MGraph(g, 'a');
 
     return 0;
 }
