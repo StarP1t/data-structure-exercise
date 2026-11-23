@@ -197,6 +197,77 @@ void BFSTrav(const pALG G)
     putchar('\n');
 }
 
+/*
+函数名称：top_logical_sort_dALG
+输入：const pALG G
+输出：int (status) 0/1/2
+说明：拓扑排序有向图
+*/
+int top_logical_sort_dALG(const pALG G)
+{
+    int* indegree = (int*)calloc(G->vexnum, sizeof(int));
+    if (indegree == NULL)
+    {
+        printf("内存分配失败\n!");
+        return 2;
+    }
+
+    // 初始化各点入度
+    for (int i = 0; i < G->vexnum; i++)
+    {
+        ArcNode* p = G->vertices[i].firstarc;
+        while (p)
+        {
+            indegree[p->adjvex]++;
+            p = p->nextarc;
+        }
+    }
+    
+    int top = -1;
+
+    // 入度为0顶点入栈
+    for (int i = 0; i < G->vexnum; i++)
+        if (indegree[i] == 0)
+        {
+            indegree[i] = top;
+            top = i;
+        }
+
+    int count = 0;
+
+    while (top != -1)
+    {
+        // 出栈
+        int i = top;
+        top = indegree[top];
+        printf("%c ", G->vertices[i].data);
+        count++;
+
+        for (ArcNode *p = G->vertices[i].firstarc; p != NULL; p = p->nextarc)
+        {
+            int adj = p->adjvex;
+
+            indegree[adj]--;
+            if (indegree[adj] == 0) // 入栈
+            {
+                indegree[adj] = top;
+                top = adj;
+            }
+        }
+    }
+    putchar('\n');
+
+    free(indegree);
+
+    if (count < G->vexnum)
+    {
+        printf("图有环!\n");
+        return 1;
+    }
+    else
+        return 0;
+}
+
 int main()
 {
     ALGraph G;
@@ -204,6 +275,7 @@ int main()
     create_ALGraph(&G);
     DFSTrav(&G);
     BFSTrav(&G);
+    top_logical_sort_dALG(&G);
 
     return 0;
 }
